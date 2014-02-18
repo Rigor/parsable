@@ -42,7 +42,7 @@ module Parsable
     end
 
     def all_captures string
-      string.scan(/\{\{(\w*\(?\w*\.?\w*\)?)\}\}/).flatten
+      string.to_s.scan(/\{\{(\w*\(?\w*\.?\w*\)?)\}\}/).flatten
     end
 
     def capture_function_method string

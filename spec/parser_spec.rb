@@ -11,6 +11,13 @@ describe Parsable::Parser do
       end
     end
 
+    context "nil string" do
+      it "returns empty" do
+        parsed = Parsable::Parser.new(:string => nil).parse
+        expect(parsed).to be_empty
+      end
+    end
+
     context 'when one variable' do
 
       context 'no function method' do
