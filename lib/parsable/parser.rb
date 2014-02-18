@@ -5,7 +5,7 @@ module Parsable
                   :original_string, :strings, :context
 
     def initialize args={}
-      @original_string = args.fetch(:string)
+      @original_string = args.fetch(:string).to_s
       @context         = args[:context]
       @strings         = all_captures(@original_string)
     end

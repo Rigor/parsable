@@ -14,6 +14,19 @@ describe Parsable do
       expect(output).to eql(%(my+Here@email.com))
     end
 
+    context "nil string" do
+      it "does nothing" do
+        location = OpenStruct.new(:name => "Here")
+
+        output = Parsable.crunch(\
+          :string => nil, 
+          :context => {:location => location}
+        )
+
+        expect(output).to eql("")
+      end
+    end
+
     context "no replacements" do
       it "returns the original" do
         string = %(my@email.com)
