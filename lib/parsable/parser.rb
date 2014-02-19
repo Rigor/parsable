@@ -6,33 +6,25 @@ module Parsable
 
     def initialize args={}
       @original_string = args.fetch(:string).to_s
-      @context         = args[:context]
+      @context         = args.fetch(:context, Parsable::Context.new)
       @strings         = all_captures(@original_string)
     end
 
     def parse
-      strings.collect do |string|
+      strings.uniq.collect do |string|
         function, object, attribute = capture(string)
 
         { 
           :original  => string, :function  => function,
           :object    => object, :attribute => attribute,
           :lambda    => lambda {
-            if context[object.to_sym].respond_to?(attribute.to_sym)
-              context[object.to_sym].send(attribute.to_sym)
-            end
+            # if context[object.to_sym].respond_to?(attribute.to_sym)
+            #   context[object.to_sym].send(attribute.to_sym)
+            # end
+            context.read(object, attribute)
           }
         }
       end
-    end
-
-    def crunch
-      crunched = original_string.dup
-      parse.each do |item|
-        crunched.gsub!("{{#{item[:original]}}}", "#{item[:lambda].call}")
-      end
-
-      crunched
     end
 
     private

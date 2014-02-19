@@ -19,17 +19,40 @@ Or install it yourself as:
 ## Usage
 
 ```ruby
-email = OpenStruct.new(:name => "Bert")
+context = Parsable::Context.new
+
+context.system_store('email', 'name', 'Bert') # top level for pre-defined variables
 
 Parsable.crunch(\
-  :string => %(my+{{email.name}}@email.com), 
-  :context => {:email => email}
+  :string => %(my+{{email.name}}@email.com), :context => context
 )
 
 #=> my+Bert@email.com
 ```
 
-You must pass in a context that has a key that matches used `{{variables}}`. The value of that key must respond to the attribute (`{{variable.attribute}}`) 
+```ruby
+context = Parsable::Context.new
+context.custom_store('email', 'bert@company.com') # scoped to "custom" for user-entered variables
+
+context.read('custom', 'email')
+#=> 'bert@company.com'
+
+Parsable.crunch(\
+  :string => %({{custom.email}} is my email!), :context => context
+)
+
+#=> bert@company.com is my email!
+```
+
+### Pre-defined
+```ruby
+  Parsable.crunch(:string => "{{random.hex}} {{random.integer}}")
+  # "6e53a6dbab3a8e9b0eb9d467463c8a46 1392849191"
+  # note: {{random.integer}} is implemented by Time.now.to_i, so not really random at all.
+
+  Parsable.crunch(:string => "{{date.today}} {{date.year}} {{time.now}}")
+  # "2014-02-19 2014 2014-02-19 17:35:35 -0500"  
+```
 
 ## Contributing
 

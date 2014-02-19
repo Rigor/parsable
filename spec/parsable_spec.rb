@@ -2,13 +2,18 @@ require 'spec_helper'
 
 describe Parsable do
 
+  let(:context) { Parsable::Context.new }
+
+  before :each do
+    context.system_store 'location', 'name', 'Here'
+  end
+
   describe '.crunch' do
     it "outputs string with crunched values" do
-      location = OpenStruct.new(:name => "Here")
 
       output = Parsable.crunch(\
         :string => %(my+{{location.name}}@email.com), 
-        :context => {:location => location}
+        :context => context
       )
 
       expect(output).to eql(%(my+Here@email.com))
@@ -16,11 +21,10 @@ describe Parsable do
 
     context "nil string" do
       it "does nothing" do
-        location = OpenStruct.new(:name => "Here")
 
         output = Parsable.crunch(\
           :string => nil, 
-          :context => {:location => location}
+          :context => context
         )
 
         expect(output).to eql("")
@@ -32,20 +36,31 @@ describe Parsable do
         string = %(my@email.com)
         output = Parsable.crunch(\
           :string => string, 
-          :context => {}
+          :context => context
         )
 
         expect(output).to eql(string)
       end
     end
 
+    context "same replacement" do
+      it "replaces both strings" do
+        string = %(my{{location.name}}@email.com{{location.name}})
+        output = Parsable.crunch(\
+          :string => string, 
+          :context => context
+        )
+
+        expect(output).to eql(%(myHere@email.comHere))
+      end
+    end
+
     context "method not defined" do
       it "replaces with empty" do
-        location = OpenStruct.new(:name => "Here")
 
         output = Parsable.crunch(\
           :string => %(my+{{location.not_name}}@email.com), 
-          :context => {:location => location}
+          :context => context
         )
 
         expect(output).to eql(%(my+@email.com))
@@ -54,11 +69,10 @@ describe Parsable do
 
     context "no context key" do
       it "replaces with empty" do
-        location = OpenStruct.new(:name => "Here")
 
         output = Parsable.crunch(\
           :string => %(my+{{wrong_key.name}}@email.com), 
-          :context => {:location => location}
+          :context => context
         )
 
         expect(output).to eql(%(my+@email.com))
