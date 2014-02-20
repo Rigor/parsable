@@ -1,4 +1,4 @@
-# Parsable
+# Parsable [![Code Climate](https://codeclimate.com/github/hcliu/parsable.png)](https://codeclimate.com/github/hcliu/parsable) [![Build Status](https://travis-ci.org/hcliu/parsable.png?branch=master)](https://travis-ci.org/hcliu/parsable)
 
 A basic implementation of replacing inline {{variables}} with values. Inspired by [Shopify's Liquid](https://github.com/Shopify/liquid)
 
