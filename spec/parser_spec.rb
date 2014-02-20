@@ -25,11 +25,11 @@ describe Parsable::Parser do
           @parsed = Parsable::Parser.new(:string => %(my+{{location.name}}@email.com)).parse.first
         end
         it "parses object name" do
-          expect(@parsed[:object]).to eql('location')
+          expect(@parsed.object).to eql('location')
         end
 
         it "parses attribute" do
-          expect(@parsed[:attribute]).to eql('name')
+          expect(@parsed.attribute).to eql('name')
         end
       end
 
@@ -37,7 +37,7 @@ describe Parsable::Parser do
         it "parses function method" do
           string = %(my+{{url_safe(location.name)}}@email.com)
           parsed = Parsable::Parser.new(:string => string).parse.first
-          expect(parsed[:function]).to eql('url_safe')
+          expect(parsed.function).to eql('url_safe')
         end
       end
     end
@@ -53,13 +53,13 @@ describe Parsable::Parser do
 
       context 'no function method' do
         it "parses object names" do
-          expect(@parsed.first[:object]).to eql('location')
-          expect(@parsed.last[:object]).to eql('email')
+          expect(@parsed.first.object).to eql('location')
+          expect(@parsed.last.object).to eql('email')
         end
 
         it "parses attributes" do
-          expect(@parsed.first[:attribute]).to eql('name')
-          expect(@parsed.last[:attribute]).to eql('domain')
+          expect(@parsed.first.attribute).to eql('name')
+          expect(@parsed.last.attribute).to eql('domain')
         end
       end
 
@@ -68,8 +68,8 @@ describe Parsable::Parser do
           string = %(my+{{url_safe(location.name)}}@{{email.domain}}.com)
           parsed = Parsable::Parser.new(:string => string).parse
 
-          expect(parsed.first[:function]).to eql('url_safe')
-          expect(parsed.last[:function]).to be_nil
+          expect(parsed.first.function).to eql('url_safe')
+          expect(parsed.last.function).to be_nil
         end
       end
     end

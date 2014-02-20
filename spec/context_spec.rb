@@ -25,9 +25,17 @@ describe Parsable::Context do
   end
 
   describe '#read' do
-    it "gets value for object.attribute" do
-      context.instance_variable_get('@variables')[:test_object] = OpenStruct.new(:fruit => 'bananas')
-      expect(context.read('test_object', 'fruit')).to eql("bananas")
+    context 'object_key exists' do
+      it "gets value for object.attribute" do
+        context.instance_variable_get('@variables')[:test_object] = OpenStruct.new(:fruit => 'bananas')
+        expect(context.read('test_object', 'fruit')).to eql("bananas")
+      end
+    end
+
+    context 'no object_key' do
+      it "is nil" do
+        expect(context.read('not_exists', 'fruit')).to be_nil
+      end
     end
   end
 

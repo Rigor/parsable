@@ -1,12 +1,10 @@
 module Parsable
   class Parser
 
-    attr_accessor :object, :attribute, :function_method, 
-                  :original_string, :strings, :context
+    attr_accessor :original_string, :strings
 
     def initialize args={}
       @original_string = args.fetch(:string).to_s
-      @context         = args.fetch(:context, Parsable::Context.new)
       @strings         = all_captures(@original_string)
     end
 
@@ -14,16 +12,12 @@ module Parsable
       strings.uniq.collect do |string|
         function, object, attribute = capture(string)
 
-        { 
-          :original  => string, :function  => function,
-          :object    => object, :attribute => attribute,
-          :lambda    => lambda {
-            # if context[object.to_sym].respond_to?(attribute.to_sym)
-            #   context[object.to_sym].send(attribute.to_sym)
-            # end
-            context.read(object, attribute)
-          }
-        }
+        Parsable::ParsedItem.new(\
+          :original  => string, 
+          :function  => function,
+          :object    => object,
+          :attribute => attribute
+        )
       end
     end
 
