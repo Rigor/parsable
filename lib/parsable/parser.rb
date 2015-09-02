@@ -45,7 +45,7 @@ module Parsable
     end
 
     def object_attribute string
-      string.match[/(\w*\.\w*)/, 1].to_s.split('.')
+      string[/(\w*\.\w*)/, 1].to_s.split('.')
     end
 
   end
