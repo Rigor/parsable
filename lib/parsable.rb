@@ -4,7 +4,7 @@ require 'parsable/context'
 require 'parsable/parsed_item'
 
 module Parsable
-  
+
   def self.crunch args={}
     original      = args.fetch(:string).to_s
     parsed_parts  = Parsable::Parser.new(args).parse

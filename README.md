@@ -51,7 +51,7 @@ Parsable.crunch(\
   # note: {{random.integer}} is implemented by Time.now.to_i, so not really random at all.
 
   Parsable.crunch(:string => "{{date.today}} {{date.year}} {{time.now}}")
-  # "2014-02-19 2014 2014-02-19 17:35:35 -0500"  
+  # "2014-02-19 2014 2014-02-19 17:35:35 -0500"
 ```
 
 ## Contributing

@@ -13,7 +13,7 @@ module Parsable
         function, object, attribute = capture(string)
 
         Parsable::ParsedItem.new(\
-          :original  => string, 
+          :original  => string,
           :function  => function,
           :object    => object,
           :attribute => attribute

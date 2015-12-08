@@ -12,7 +12,7 @@ describe Parsable do
     it "outputs string with crunched values" do
 
       output = Parsable.crunch(\
-        :string => %(my+{{location.name}}@email.com), 
+        :string => %(my+{{location.name}}@email.com),
         :context => context
       )
 
@@ -23,7 +23,7 @@ describe Parsable do
       it "does nothing" do
 
         output = Parsable.crunch(\
-          :string => nil, 
+          :string => nil,
           :context => context
         )
 
@@ -35,7 +35,7 @@ describe Parsable do
       it "returns the original" do
         string = %(my@email.com)
         output = Parsable.crunch(\
-          :string => string, 
+          :string => string,
           :context => context
         )
 
@@ -47,7 +47,7 @@ describe Parsable do
       it "replaces both strings" do
         string = %(my{{location.name}}@email.com{{location.name}})
         output = Parsable.crunch(\
-          :string => string, 
+          :string => string,
           :context => context
         )
 
@@ -59,7 +59,7 @@ describe Parsable do
       it "replaces with empty" do
 
         output = Parsable.crunch(\
-          :string => %(my+{{location.not_name}}@email.com), 
+          :string => %(my+{{location.not_name}}@email.com),
           :context => context
         )
 
@@ -71,7 +71,7 @@ describe Parsable do
       it "replaces with empty" do
 
         output = Parsable.crunch(\
-          :string => %(my+{{wrong_key.name}}@email.com), 
+          :string => %(my+{{wrong_key.name}}@email.com),
           :context => context
         )
 

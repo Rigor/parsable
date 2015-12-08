@@ -14,8 +14,7 @@ module Parsable
         :date     => OpenStruct.new(:today => Date.today.to_s, :year => Date.today.year.to_s),
         :time     => OpenStruct.new(:now => Time.now.to_s),
         :custom   => OpenStruct.new
-      }) # object_key => OpenStruct.new(:attribute => value)
-         # {{object.attribute}} returns value
+      })
     end
 
     def custom_store attribute, value
