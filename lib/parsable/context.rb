@@ -18,25 +18,25 @@ module Parsable
     end
 
     def custom_store attribute, value
-      _store :custom, attribute, value
+      store :custom, attribute, value
     end
 
     def system_store object_key, attribute, value
-      _store object_key, attribute, value
+      store object_key, attribute, value
     end
 
     def read object_key, attribute
-      _object(object_key).send(attribute.to_sym)
+      object(object_key).send(attribute.to_sym)
     end
 
     private
 
-    def _object object_key
+    def object object_key
       variables[object_key.to_sym] ||= OpenStruct.new
     end
 
-    def _store object_key, attribute, value
-      _object(object_key).send("#{attribute}=".to_sym, value)
+    def store object_key, attribute, value
+      object(object_key).send("#{attribute}=".to_sym, value)
     end
 
   end
