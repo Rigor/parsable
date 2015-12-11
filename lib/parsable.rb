@@ -2,6 +2,7 @@ require "parsable/version"
 require 'parsable/parser'
 require 'parsable/context'
 require 'parsable/parsed_item'
+require 'parsable/remote'
 
 module Parsable
 

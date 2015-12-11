@@ -15,6 +15,8 @@ module Parsable
         :time     => OpenStruct.new(:now => Time.now.to_s),
         :custom   => OpenStruct.new
       })
+
+      @variables.store(:remote, Parsable::Remote.new)
     end
 
     def custom_store attribute, value

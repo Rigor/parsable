@@ -6,7 +6,7 @@ describe Parsable::Context do
 
   describe '#new' do
     it "sets default variables" do
-      expect(context.instance_variable_get('@variables').keys.size).to eql(4)
+      expect(context.instance_variable_get('@variables').keys.size).to eql(5)
     end
   end
 

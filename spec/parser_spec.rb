@@ -19,26 +19,15 @@ describe Parsable::Parser do
     end
 
     context 'when one variable' do
-
-      context 'no function method' do
-        before :each do
-          @parsed = Parsable::Parser.new(:string => %(my+{{location.name}}@email.com)).parse.first
-        end
-        it "parses object name" do
-          expect(@parsed.object).to eql('location')
-        end
-
-        it "parses attribute" do
-          expect(@parsed.attribute).to eql('name')
-        end
+      before :each do
+        @parsed = Parsable::Parser.new(:string => %(my+{{location.name}}@email.com)).parse.first
+      end
+      it "parses object name" do
+        expect(@parsed.object).to eql('location')
       end
 
-      context "function method" do
-        it "parses function method" do
-          string = %(my+{{url_safe(location.name)}}@email.com)
-          parsed = Parsable::Parser.new(:string => string).parse.first
-          expect(parsed.function).to eql('url_safe')
-        end
+      it "parses attribute" do
+        expect(@parsed.attribute).to eql('name')
       end
     end
 
@@ -51,26 +40,26 @@ describe Parsable::Parser do
         expect(@parsed.size).to eql(2)
       end
 
-      context 'no function method' do
-        it "parses object names" do
-          expect(@parsed.first.object).to eql('location')
-          expect(@parsed.last.object).to eql('email')
-        end
-
-        it "parses attributes" do
-          expect(@parsed.first.attribute).to eql('name')
-          expect(@parsed.last.attribute).to eql('domain')
-        end
+      it "parses object names" do
+        expect(@parsed.first.object).to eql('location')
+        expect(@parsed.last.object).to eql('email')
       end
 
-      context "function method" do
-        it "parses function methods" do
-          string = %(my+{{url_safe(location.name)}}@{{email.domain}}.com)
-          parsed = Parsable::Parser.new(:string => string).parse
+      it "parses attributes" do
+        expect(@parsed.first.attribute).to eql('name')
+        expect(@parsed.last.attribute).to eql('domain')
+      end
+    end
 
-          expect(parsed.first.function).to eql('url_safe')
-          expect(parsed.last.function).to be_nil
-        end
+    context 'when remote object' do
+      subject { Parsable::Parser.new(:string => %({{remote.http://google.com?query1=q1&query2=q2}}@email.com)).parse.first }
+
+      it "parses object name" do
+        expect(subject.object).to eql('remote')
+      end
+
+      it "parses attribute" do
+        expect(subject.attribute).to eql('http://google.com?query1=q1&query2=q2')
       end
     end
   end

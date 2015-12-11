@@ -1,0 +1,46 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://httpbin.org/get?query1=q1&query2=q2
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - '*/*'
+      User-Agent:
+      - Ruby
+      Host:
+      - httpbin.org
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Fri, 11 Dec 2015 22:46:56 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '311'
+      Connection:
+      - keep-alive
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Allow-Credentials:
+      - 'true'
+    body:
+      encoding: UTF-8
+      string: "{\n  \"args\": {\n    \"query1\": \"q1\", \n    \"query2\": \"q2\"\n
+        \ }, \n  \"headers\": {\n    \"Accept\": \"*/*\", \n    \"Accept-Encoding\":
+        \"gzip;q=1.0,deflate;q=0.6,identity;q=0.3\", \n    \"Host\": \"httpbin.org\",
+        \n    \"User-Agent\": \"Ruby\"\n  }, \n  \"origin\": \"104.200.143.243\",
+        \n  \"url\": \"http://httpbin.org/get?query1=q1&query2=q2\"\n}\n"
+    http_version: 
+  recorded_at: Fri, 11 Dec 2015 22:46:56 GMT
+recorded_with: VCR 3.0.0
