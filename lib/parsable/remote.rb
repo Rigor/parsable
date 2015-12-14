@@ -19,7 +19,7 @@ module Parsable
     def get_response uri
       0.upto(2) do |i|
         begin
-          response = Curl::Easy.perform(uri.to_s) do |http|
+          Curl::Easy.perform(uri.to_s) do |http|
             http.connect_timeout = 2
             http.on_success { |easy| @body = easy.body_str }
           end
