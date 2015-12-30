@@ -3,6 +3,7 @@ require 'parsable/parser'
 require 'parsable/context'
 require 'parsable/parsed_item'
 require 'parsable/remote'
+require 'parsable/uri_helper'
 
 module Parsable
 

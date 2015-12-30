@@ -17,6 +17,7 @@ module Parsable
       })
 
       @variables.store(:remote, Parsable::Remote.new)
+      @variables.store(:sremote, Parsable::Remote.new(:secure => true))
     end
 
     def custom_store attribute, value

@@ -5,7 +5,10 @@ module Parsable
   class Remote
     # uses the response from a remote location
 
-    def initialize
+    attr_accessor :secure
+
+    def initialize options={}
+      self.secure = options.fetch(:secure, false)
     end
 
     def method_missing(method_sym, *arguments, &block)
@@ -16,15 +19,24 @@ module Parsable
 
     private
 
-    def get_response uri
-      0.upto(2) do |i|
-        begin
-          Curl::Easy.perform(uri.to_s) do |http|
-            http.connect_timeout = 2
-            http.on_success { |easy| @body = easy.body_str }
-          end
-        rescue Curl::Err::CurlError
+    def perform url, headers={}
+      begin
+        Curl::Easy.perform(url) do |http|
+          headers.each { |header, value| http.headers[header] = value }
+          http.connect_timeout = 2
+          http.on_success { |easy| @body = easy.body_str }
         end
+      rescue Curl::Err::CurlError
+      end
+    end
+
+    def get_response uri
+      transformer = Parsable::UriHelper.new(uri)
+      url = transformer.to_s
+      headers = transformer.secrets
+
+      0.upto(2) do |i|
+        perform(url, headers)
 
         break if @body
       end

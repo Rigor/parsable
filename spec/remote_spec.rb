@@ -16,6 +16,18 @@ describe Parsable::Remote do
           query = {"args" => {"query1" => "q1", "query2" => "q2"}}
           expect(JSON.parse(subject.send("http://httpbin.org/get?query1=q1&query2=q2"))).to include(query)
         end
+        context "with secure request" do
+
+          subject { described_class.new(:secure => true) }
+
+          it "moves sensitive query params into headers" do
+            query = {"unsecure" => "notsecure"}
+            headers = {"api_key" => "flkdsjflksjfejifwf"}
+            body_hash = JSON.parse(subject.send("http://httpbin.org/get?api_key=flkdsjflksjfejifwf&unsecure=notsecure"))
+            expect(body_hash["args"]).to eql(query)
+            expect(body_hash["headers"]).to include("Api-Key" => "flkdsjflksjfejifwf")
+          end
+        end
       end
 
       context "cant connect" do

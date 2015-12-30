@@ -1,0 +1,39 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://httpbin.org/get?unsecure=notsecure
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Api-Key:
+      - flkdsjflksjfejifwf
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Wed, 30 Dec 2015 05:59:13 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '241'
+      Connection:
+      - keep-alive
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Allow-Credentials:
+      - 'true'
+    body:
+      encoding: ASCII-8BIT
+      string: "{\n  \"args\": {\n    \"unsecure\": \"notsecure\"\n  }, \n  \"headers\":
+        {\n    \"Accept\": \"*/*\", \n    \"Api-Key\": \"flkdsjflksjfejifwf\", \n
+        \   \"Host\": \"httpbin.org\"\n  }, \n  \"origin\": \"107.139.199.11\", \n
+        \ \"url\": \"http://httpbin.org/get?unsecure=notsecure\"\n}\n"
+    http_version: 
+  recorded_at: Wed, 30 Dec 2015 05:59:13 GMT
+recorded_with: VCR 3.0.0
