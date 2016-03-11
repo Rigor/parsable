@@ -6,7 +6,8 @@ describe Parsable::Context do
 
   describe '#new' do
     it "sets default variables" do
-      expect(context.instance_variable_get('@variables').keys.size).to eql(5)
+      keys = %i(random date time custom remote sremote)
+      expect(context.instance_variable_get('@variables').keys).to match_array(keys)
     end
   end
 
