@@ -6,7 +6,8 @@ describe Parsable::Context do
 
   describe '#new' do
     it "sets default variables" do
-      expect(context.instance_variable_get('@variables').keys.size).to eql(5)
+      keys = %i(random date time custom remote sremote)
+      expect(context.instance_variable_get('@variables').keys).to match_array(keys)
     end
   end
 
@@ -21,6 +22,34 @@ describe Parsable::Context do
     it "stores variables as a top level object_key" do
       context.system_store :test_object, 'test_attribute', 'test_value'
       expect(context.instance_variable_get('@variables')[:test_object].test_attribute).to eql("test_value")
+    end
+  end
+
+  describe '#purge' do
+    subject { context.purge :test_object }
+
+    context 'when the object_key exists' do
+      before { context.system_store :test_object, 'test_attribute', 'test_value' }
+
+      it 'delete the object_key' do
+        subject
+        expect(context.instance_variable_get('@variables').keys).not_to include(:test_object)
+      end
+
+      it 'returns the value' do
+        subject
+        expect(context.instance_variable_get('@variables').keys).not_to include(:test_object)
+      end
+    end
+
+    context 'when the object_key does NOT exist' do
+      it 'does not return the object key' do
+        expect { subject }.not_to change { context.instance_variable_get('@variables').keys }
+      end
+
+      it 'returns nil' do
+        expect(subject).to be_nil
+      end
     end
   end
 

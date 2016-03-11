@@ -28,6 +28,10 @@ module Parsable
       store object_key, attribute, value
     end
 
+    def purge object_key
+      variables.delete(object_key.to_sym)
+    end
+
     def read object_key, attribute
       object(object_key).send(attribute.to_sym)
     end
