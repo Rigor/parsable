@@ -25,6 +25,34 @@ describe Parsable::Context do
     end
   end
 
+  describe '#purge' do
+    subject { context.purge :test_object }
+
+    context 'when the object_key exists' do
+      before { context.system_store :test_object, 'test_attribute', 'test_value' }
+
+      it 'delete the object_key' do
+        subject
+        expect(context.instance_variable_get('@variables').keys).not_to include(:test_object)
+      end
+
+      it 'returns the value' do
+        subject
+        expect(context.instance_variable_get('@variables').keys).not_to include(:test_object)
+      end
+    end
+
+    context 'when the object_key does NOT exist' do
+      it 'does not return the object key' do
+        expect { subject }.not_to change { context.instance_variable_get('@variables').keys }
+      end
+
+      it 'returns nil' do
+        expect(subject).to be_nil
+      end
+    end
+  end
+
   describe '#read' do
     context 'object_key exists' do
       it "gets value for object.attribute" do
