@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe Parsable::Context do
-
   let(:context) { Parsable::Context.new }
 
   describe '#new' do
@@ -17,10 +16,26 @@ describe Parsable::Context do
     end
   end
 
+  describe "#custom_purge" do
+    it "sets the custom variable to nil in the cusom object_key" do
+      context.custom_store :email, "test@test.com"
+      context.custom_purge :email
+      expect(context.instance_variable_get("@variables")[:custom].email).to be_nil
+    end
+  end
+
   describe '#system_store' do
     it "stores variables as a top level object_key" do
       context.system_store :test_object, 'test_attribute', 'test_value'
       expect(context.instance_variable_get('@variables')[:test_object].test_attribute).to eql("test_value")
+    end
+  end
+
+  describe "#system_purge" do
+    it "sets the custom variable to nil in the cusom object_key" do
+      context.system_store :test_object, "test_attribute", "test_value"
+      context.system_purge :test_object, "test_attribute"
+      expect(context.instance_variable_get("@variables")[:test_object].test_attribute).to be_nil
     end
   end
 
@@ -38,5 +53,4 @@ describe Parsable::Context do
       end
     end
   end
-
 end

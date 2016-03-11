@@ -24,8 +24,16 @@ module Parsable
       store :custom, attribute, value
     end
 
+    def custom_purge attribute
+      purge :custom, attribute
+    end
+
     def system_store object_key, attribute, value
       store object_key, attribute, value
+    end
+
+    def system_purge object_key, attribute
+      purge object_key, attribute
     end
 
     def read object_key, attribute
@@ -42,5 +50,8 @@ module Parsable
       object(object_key).send("#{attribute}=".to_sym, value)
     end
 
+    def purge object_key, attribute
+      store object_key, attribute, nil
+    end
   end
 end
