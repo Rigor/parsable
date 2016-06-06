@@ -44,7 +44,7 @@ module Parsable
     end
 
     def uri? string
-      uri = URI.parse(string)
+      uri = URI.parse(string.to_s)
       if uri && uri.kind_of?(URI::HTTP)
         uri
       else
