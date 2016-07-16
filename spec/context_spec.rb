@@ -5,9 +5,41 @@ describe Parsable::Context do
   let(:context) { Parsable::Context.new }
 
   describe '#new' do
+    subject { context.instance_variable_get('@variables') }
+
     it "sets default variables" do
       keys = %i(random date time custom remote sremote)
-      expect(context.instance_variable_get('@variables').keys).to match_array(keys)
+      expect(subject.keys).to match_array(keys)
+    end
+
+    {
+      '2016-5-6' => {
+        'date.today' => '2016-05-06',
+        'date.year'  => '2016',
+        'date.month' => '05',
+        'date.day'   => '06'
+      },
+      '2016-5-29' => {
+        'date.today' => '2016-05-29',
+        'date.year'  => '2016',
+        'date.month' => '05',
+        'date.day'   => '29'
+      },
+      '2016-12-31' => {
+        'date.today' => '2016-12-31',
+        'date.year'  => '2016',
+        'date.month' => '12',
+        'date.day'   => '31'
+      }
+
+    }.each do |date, examples|
+      examples.each do |var, value|
+        namespace, varname = var.split('.')
+        it "sets #{var}" do
+          allow(Date).to receive(:today).and_return(Date.parse(date))
+          expect(subject[namespace.to_sym].send(varname)).to eq value
+        end
+      end
     end
   end
 
