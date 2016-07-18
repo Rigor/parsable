@@ -23,7 +23,7 @@ module Parsable
       begin
         Curl::Easy.perform(url) do |http|
           headers.each { |header, value| http.headers[header] = value }
-          http.connect_timeout = 2
+          http.timeout = 2
           http.on_success { |easy| @body = easy.body_str }
         end
       rescue Curl::Err::CurlError
