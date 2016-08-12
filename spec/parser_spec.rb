@@ -1,67 +1,73 @@
 require 'spec_helper'
 
 describe Parsable::Parser do
+  let(:parser) { described_class.new(:string => string) }
 
   describe '#parse' do
+    subject { parser.parse }
+    let(:first) { subject.first }
 
     context "when no variables" do
+      let(:string) { "novariables" }
       it "returns empty" do
-        parsed = Parsable::Parser.new(:string => "novariables").parse
-        expect(parsed).to be_empty
+        expect(subject).to be_empty
       end
     end
 
     context "nil string" do
+      let(:string) { nil }
       it "returns empty" do
-        parsed = Parsable::Parser.new(:string => nil).parse
-        expect(parsed).to be_empty
+        expect(subject).to be_empty
       end
     end
 
     context 'when one variable' do
-      before :each do
-        @parsed = Parsable::Parser.new(:string => %(my+{{location.name}}@email.com)).parse.first
-      end
+      let(:string) { %(my+{{location.name}}@email.com) } 
+      
       it "parses object name" do
-        expect(@parsed.object).to eql('location')
+        expect(first.object).to eql('location')
       end
 
       it "parses attribute" do
-        expect(@parsed.attribute).to eql('name')
+        expect(first.attribute).to eql('name')
       end
     end
 
     context 'when multiple variables' do
-      before :each do
-        @parsed = Parsable::Parser.new(:string => %(my+{{location.name}}@{{email.domain}}.com)).parse
-      end
+      let(:string) { %(my+{{location.name}}@{{email.domain}}.com) }
 
       it "returns multiple strings" do
-        expect(@parsed.size).to eql(2)
+        expect(subject.size).to eql(2)
       end
 
       it "parses object names" do
-        expect(@parsed.first.object).to eql('location')
-        expect(@parsed.last.object).to eql('email')
+        expect(subject.first.object).to eql('location')
+        expect(subject.last.object).to eql('email')
       end
 
       it "parses attributes" do
-        expect(@parsed.first.attribute).to eql('name')
-        expect(@parsed.last.attribute).to eql('domain')
+        expect(subject.first.attribute).to eql('name')
+        expect(subject.last.attribute).to eql('domain')
       end
     end
 
     context 'when remote object' do
-      subject { Parsable::Parser.new(:string => %({{remote.http://google.com?query1=q1&query2=q2}}@email.com)).parse.first }
-
+      let(:string) { %({{remote.http://google.com?query1=q1&query2=q2}}@email.com) }  
       it "parses object name" do
-        expect(subject.object).to eql('remote')
+        expect(first.object).to eql('remote')
       end
 
       it "parses attribute" do
-        expect(subject.attribute).to eql('http://google.com?query1=q1&query2=q2')
+        expect(first.attribute).to eql('http://google.com?query1=q1&query2=q2')
+      end
+    end
+
+    context 'when the match has the potential to greedy match' do
+      let(:string) { %({{foo.bar}}some other text}}) }
+
+      it 'performs a non-greedy match' do
+        expect(first.attribute).to eq('bar')
       end
     end
   end
-
 end
