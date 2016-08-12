@@ -1,7 +1,7 @@
 module Parsable
   class Parser
 
-    REGEX = /\{{2}(\w*\.?\S[^\{\{]*)\}{2}/
+    REGEX = /\{{2}(\w*\.?\S[^\{\{]*?)\}{2}/
 
     attr_accessor :original_string, :strings
 
