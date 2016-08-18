@@ -70,4 +70,50 @@ describe Parsable::Parser do
       end
     end
   end
+
+  describe '#strings' do
+    subject { parser.strings }
+
+    context 'when there are variables' do
+      let(:string) { 'This is a string.' }
+
+      it 'returns an empty array' do
+        expect(subject).to eq([])
+      end
+    end
+
+    context 'when there is one variable' do
+      context 'at the beginning of the string' do
+        let(:string) { '{{some.variable}} end of string.' }
+
+        it 'finds the variable' do
+          expect(subject).to eq(['some.variable'])
+        end
+      end
+
+      context 'in the middle of the string' do
+        let(:string) { 'Beginning of string {{some.variable}} end of string.' }
+
+        it 'finds the variable' do
+          expect(subject).to eq(['some.variable'])
+        end
+      end
+
+      context 'at the end of the string' do
+        let(:string) { 'Beginning of string {{some.variable}}' }
+
+        it 'finds the variable' do
+          expect(subject).to eq(['some.variable'])
+        end
+      end
+    end
+
+    context 'when there are multiple variables' do
+      let(:string) { '{{foo.bar}} {{foo.baz}}' }
+
+      it 'returns an array of parsed strings' do
+        expect(subject).to match_array(['foo.bar', 'foo.baz'])
+      end
+    end
+  end
 end
