@@ -14,7 +14,7 @@ module Parsable
       @variables = args.fetch(:variables, {
         :random => OpenStruct.new(
           :hex     => SecureRandom.hex,
-          :integer => time.to_i # TODO: use SecureRandom.random_number
+          :integer => SecureRandom.random_number(10_000_000_000) # 10-digit number
         ),
         :date => OpenStruct.new(
           :today => today.to_s,
