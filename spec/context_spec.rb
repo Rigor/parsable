@@ -12,32 +12,78 @@ describe Parsable::Context do
       expect(subject.keys).to match_array(keys)
     end
 
-    {
-      '2016-5-6' => {
-        'date.today' => '2016-05-06',
-        'date.year'  => '2016',
-        'date.month' => '05',
-        'date.day'   => '06'
-      },
-      '2016-5-29' => {
-        'date.today' => '2016-05-29',
-        'date.year'  => '2016',
-        'date.month' => '05',
-        'date.day'   => '29'
-      },
-      '2016-12-31' => {
-        'date.today' => '2016-12-31',
-        'date.year'  => '2016',
-        'date.month' => '12',
-        'date.day'   => '31'
-      }
+    context 'date vars' do
+      {
+        '2016-5-6' => {
+          'date.today' => '2016-05-06',
+          'date.year'  => '2016',
+          'date.month' => '05',
+          'date.day'   => '06'
+        },
+        '2016-5-29' => {
+          'date.today' => '2016-05-29',
+          'date.year'  => '2016',
+          'date.month' => '05',
+          'date.day'   => '29'
+        },
+        '2016-12-31' => {
+          'date.today' => '2016-12-31',
+          'date.year'  => '2016',
+          'date.month' => '12',
+          'date.day'   => '31'
+        }
 
-    }.each do |date, examples|
-      examples.each do |var, value|
-        namespace, varname = var.split('.')
-        it "sets #{var}" do
-          allow(Date).to receive(:today).and_return(Date.parse(date))
-          expect(subject[namespace.to_sym].send(varname)).to eq value
+      }.each do |date, examples|
+        examples.each do |var, value|
+          namespace, varname = var.split('.')
+          it "sets #{var}" do
+            allow(Date).to receive(:today).and_return(Date.parse(date))
+            expect(subject[namespace.to_sym].send(varname)).to eq value
+          end
+        end
+      end
+    end
+
+    context 'time vars' do
+      {
+        1275408000 => {
+          'time.now'   => Time.at(1275408000).to_s,
+          'time.epoch' => 1275408000
+        },
+        1475165352 => {
+          'time.now'   => Time.at(1475165352).to_s,
+          'time.epoch' => 1475165352
+        }
+
+      }.each do |time, examples|
+        examples.each do |var, value|
+          namespace, varname = var.split('.')
+          it "sets #{var}" do
+            allow(Time).to receive(:now).and_return(Time.at(time))
+            expect(subject[namespace.to_sym].send(varname)).to eq value
+          end
+        end
+      end
+    end
+
+    context 'random vars' do
+      subject { context.read('random', 'hex') }
+
+      context 'hex' do
+        it 'returns a string' do
+          expect(subject).to be_a String
+        end
+      end
+
+      context 'integer' do
+        subject { context.read('random', 'integer') }
+
+        it 'returns an integer' do
+          expect(subject).to be_an Integer
+        end
+
+        it 'has 10 digits' do
+          expect(subject.to_s.length).to eq 10
         end
       end
     end
