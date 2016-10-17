@@ -9,11 +9,24 @@ module Parsable
 
     def initialize args={}
       today = Date.today
+      time  = Time.now
+
       @variables = args.fetch(:variables, {
-        :random   => OpenStruct.new(:hex => SecureRandom.hex, :integer => Time.now.to_i),
-        :date     => OpenStruct.new(:today => today.to_s, :year => today.year.to_s, :month => sprintf('%02d', today.month), :day => sprintf('%02d', today.day)),
-        :time     => OpenStruct.new(:now => Time.now.to_s),
-        :custom   => OpenStruct.new
+        :random => OpenStruct.new(
+          :hex     => SecureRandom.hex,
+          :integer => time.to_i # TODO: use SecureRandom.random_number
+        ),
+        :date => OpenStruct.new(
+          :today => today.to_s,
+          :year  => today.year.to_s,
+          :month => sprintf('%02d', today.month),
+          :day   => sprintf('%02d', today.day)
+        ),
+        :time => OpenStruct.new(
+          :now   => time.to_s,
+          :epoch => time.to_i
+        ),
+        :custom => OpenStruct.new
       })
 
       @variables.store(:remote, Parsable::Remote.new)
