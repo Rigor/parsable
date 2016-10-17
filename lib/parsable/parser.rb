@@ -21,14 +21,14 @@ module Parsable
       end
     end
 
+    def strings
+      @strings ||= original_string.to_s.scan(REGEX).flatten
+    end
+
     private
 
     def capture string
       [capture_object(string), capture_attribute(string)]
-    end
-
-    def strings
-      @strings ||= original_string.to_s.scan(REGEX).flatten
     end
 
     def capture_object string
