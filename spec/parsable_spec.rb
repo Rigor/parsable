@@ -6,6 +6,7 @@ describe Parsable do
 
   before :each do
     context.system_store 'location', 'name', 'Here'
+    context.system_store 'some', 'backslashes', %Q(\\\\)
   end
 
   describe '.crunch' do
@@ -52,6 +53,17 @@ describe Parsable do
         )
 
         expect(output).to eql(%(myHere@email.comHere))
+      end
+    end
+
+    context 'with backslashes' do
+      it 'does not interpolate backslashes in the replacement' do
+        string = '{{some.backslashes}}'
+        output = Parsable.crunch(\
+          :string => string,
+          :context => context
+        )
+        expect(output).to eql(%Q(\\\\))
       end
     end
 
