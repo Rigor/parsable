@@ -15,7 +15,14 @@ module Parsable
     crunched = original.dup
 
     parsed_parts.each do |item|
-      crunched.gsub!("{{#{item.original}}}", context.read(item.object, item.attribute).to_s)
+      # Using the block form of this method here due to how backslashes are handled by gsub.
+      # See https://stackoverflow.com/questions/1542214/weird-backslash-substitution-in-ruby
+      # particularly the answer that reads:
+      ##################################################################################################################
+      # The problem is that when using sub (and gsub), without a block, ruby interprets special character sequences
+      # in the replacement parameter.
+      ##################################################################################################################
+      crunched.gsub!("{{#{item.original}}}") { context.read(item.object, item.attribute).to_s }
     end
 
     crunched
