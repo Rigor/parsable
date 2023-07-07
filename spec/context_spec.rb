@@ -150,6 +150,8 @@ describe Parsable::Context do
         context.instance_variable_get('@variables')[:headers] = OpenStruct.new(:case => 'insensitive')
         expect(context.read('headers', 'case')).to eql("insensitive")
         expect(context.read('headers', 'Case')).to eql("insensitive")
+        expect(context.read(:headers, 'case')).to eql("insensitive")
+        expect(context.read(:headers, 'Case')).to eql("insensitive")
       end
 
     end

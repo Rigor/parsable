@@ -11,7 +11,7 @@ module Parsable
       today = Date.today
       time  = Time.now
 
-      @case_insensitive_namespace = args.fetch(:case_insensitive_namespace, ['headers'])
+      @case_insensitive_namespace = args.fetch(:case_insensitive_namespace, ['headers', :headers])
       @variables = args.fetch(:variables, {
         :random => OpenStruct.new(
           :hex     => SecureRandom.hex,
