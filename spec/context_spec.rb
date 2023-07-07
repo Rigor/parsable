@@ -144,6 +144,15 @@ describe Parsable::Context do
         expect(context.read('not_exists', 'fruit')).to be_nil
       end
     end
+
+    context 'case insensitive read' do
+      it "gets value no matter case of the header" do
+        context.instance_variable_get('@variables')[:headers] = OpenStruct.new(:case => 'insensitive')
+        expect(context.read('headers', 'case')).to eql("insensitive")
+        expect(context.read('headers', 'Case')).to eql("insensitive")
+      end
+
+    end
   end
 
 end
