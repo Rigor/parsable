@@ -11,6 +11,7 @@ module Parsable
       today = Date.today
       time  = Time.now
 
+      @case_insensitive_namespace = args.fetch(:case_insensitive_namespace, ['headers', :headers])
       @variables = args.fetch(:variables, {
         :random => OpenStruct.new(
           :hex     => SecureRandom.hex,
@@ -46,7 +47,11 @@ module Parsable
     end
 
     def read object_key, attribute
-      object(object_key).send(attribute.to_sym)
+      if @case_insensitive_namespace.include?(object_key)
+        object(object_key).send(attribute.downcase.to_sym)
+      else
+        object(object_key).send(attribute.to_sym)
+      end
     end
 
     private
@@ -56,7 +61,11 @@ module Parsable
     end
 
     def store object_key, attribute, value
-      object(object_key).send("#{attribute}=".to_sym, value)
+      if @case_insensitive_namespace.include?(object_key)
+        object(object_key).send("#{attribute.downcase}=".to_sym, value)
+      else
+        object(object_key).send("#{attribute}=".to_sym, value)
+      end
     end
 
   end
